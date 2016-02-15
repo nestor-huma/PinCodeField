@@ -11,6 +11,7 @@ import UIKit
 @IBDesignable
 class NPPinCodeField: UIControl, UIKeyInput {
     
+    // MARK: properties
     @IBInspectable var pinCode: String = "" {
         didSet {
             setNeedsDisplay()
@@ -50,10 +51,9 @@ class NPPinCodeField: UIControl, UIKeyInput {
             setNeedsDisplay()
         }
     }
+
+    private var accessoryView: UIView?
     
-    func isFilled() -> Bool {
-        return pinCode.characters.count == Int(maximumLength)
-    }
     
     // MARK: UITextInputTraits protocol properties
     var autocapitalizationType = UITextAutocapitalizationType.None
@@ -63,6 +63,7 @@ class NPPinCodeField: UIControl, UIKeyInput {
     var keyboardAppearance = UIKeyboardAppearance.Default
     var returnKeyType = UIReturnKeyType.Done
     var enablesReturnKeyAutomatically = true
+    
     
     // MARK: initialization
     override init(frame: CGRect) {
@@ -78,6 +79,7 @@ class NPPinCodeField: UIControl, UIKeyInput {
     private func initialSetup() {
         addTarget(self, action: "becomeFirstResponder", forControlEvents: .TouchUpInside)
     }
+    
     
     //MARK: UIView
     override func intrinsicContentSize() -> CGSize {
@@ -102,6 +104,7 @@ class NPPinCodeField: UIControl, UIKeyInput {
             origin.x += CGFloat(dotRadius * 2 + dotSpacing)
         }
     }
+    
     
     // MARK: UIKeyInput
     func hasText() -> Bool {
@@ -132,8 +135,28 @@ class NPPinCodeField: UIControl, UIKeyInput {
         sendActionsForControlEvents(.EditingChanged)
     }
     
+    
     // MARK: UIResponder
     override func canBecomeFirstResponder() -> Bool {
         return true
+    }
+    
+    override var inputAccessoryView: UIView? {
+        get {
+            return accessoryView
+        }
+        
+        set(value) {
+            accessoryView = value
+        }
+    }
+}
+
+extension NPPinCodeField {
+    /**
+     Returns a Boolean value indicating whether all characters were entered.
+     */
+    func isFilled() -> Bool {
+        return pinCode.characters.count == Int(maximumLength)
     }
 }
