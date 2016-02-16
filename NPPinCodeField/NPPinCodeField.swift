@@ -89,18 +89,21 @@ class NPPinCodeField: UIControl, UIKeyInput {
     }
     
     override func drawRect(rect: CGRect) {
-        var origin = CGPointMake(CGFloat(lineWidth/2), CGFloat(lineWidth/2))
+        var origin = CGPointZero
         let context = UIGraphicsGetCurrentContext()
         CGContextSetFillColorWithColor(context, dotColor?.CGColor)
         CGContextSetStrokeColorWithColor(context, dotColor?.CGColor)
         CGContextSetLineWidth(context, CGFloat(lineWidth))
         for i in 0..<maximumLength {
-            let dotRect = CGRectMake(origin.x, origin.y, CGFloat(dotRadius * 2), CGFloat(dotRadius * 2))
-            if Int(i) < pinCode.characters.count {
-                CGContextFillEllipseInRect(context, dotRect)
-            } else {
-                CGContextStrokeEllipseInRect(context, dotRect)
-            }
+            let isDotFilled = Int(i) < pinCode.characters.count
+            
+            let diameter = isDotFilled ? CGFloat(dotRadius * 2) + CGFloat(lineWidth) : CGFloat(dotRadius * 2)
+            let position = isDotFilled ? origin : CGPointMake(origin.x + CGFloat(lineWidth / 2), origin.y + CGFloat(lineWidth / 2))
+            let dotRect = CGRect(origin: position, size: CGSize(width: diameter, height: diameter))
+            let drawFunction = isDotFilled ? CGContextFillEllipseInRect : CGContextStrokeEllipseInRect
+            
+            drawFunction(context, dotRect)
+            
             origin.x += CGFloat(dotRadius * 2 + dotSpacing)
         }
     }
