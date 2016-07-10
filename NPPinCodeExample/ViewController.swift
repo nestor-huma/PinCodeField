@@ -13,15 +13,26 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "pattern")!)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         pinCodeField.becomeFirstResponder()
-        pinCodeField.isFilled()
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches, withEvent: event)
+        pinCodeField.resignFirstResponder()
+    }
+    
+    @IBAction func pinCodeChanged(sender: NPPinCodeField) {
+        print("Pin code changed: " + sender.text)
+        if sender.isFilled {
+            sender.resignFirstResponder()
+            print("Pin code entered.")
+        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
 

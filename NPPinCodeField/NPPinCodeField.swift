@@ -9,157 +9,160 @@
 import UIKit
 
 @IBDesignable
-class NPPinCodeField: UIControl, UIKeyInput {
+public class NPPinCodeField: UIControl, UITextInputTraits {
     
-    // MARK: properties
-    @IBInspectable var pinCode: String = "" {
+    /** The text entered by user. */
+    @IBInspectable public var text: String = "" {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    @IBInspectable var maximumLength: UInt = 4 {
-        didSet {
-            invalidateIntrinsicContentSize()
-            setNeedsDisplay()
-        }
-    }
-    
-    @IBInspectable var dotColor: UIColor? = UIColor.blackColor() {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    
-    @IBInspectable var dotRadius: Double = 10.0 {
+    /** Length of the pin code */
+    @IBInspectable public var length: Int = 4 {
         didSet {
             invalidateIntrinsicContentSize()
             setNeedsDisplay()
         }
     }
     
-    @IBInspectable var dotSpacing: Double = 16.0 {
+    /** Color of the dots. */
+    @IBInspectable public var color: UIColor = UIColor.blackColor() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    /** Diameter of the dots. */
+    @IBInspectable public var diameter: CGFloat = 10.0 {
         didSet {
             invalidateIntrinsicContentSize()
             setNeedsDisplay()
         }
     }
     
-    @IBInspectable var lineWidth: Double = 2.0 {
+    /** Spacing between the dots. */
+    @IBInspectable public var spacing: CGFloat = 16.0 {
         didSet {
             invalidateIntrinsicContentSize()
             setNeedsDisplay()
         }
     }
-
-    private var accessoryView: UIView?
+    
+    /** Line thickness. */
+    @IBInspectable public var thickness: CGFloat = 2.0 {
+        didSet {
+            invalidateIntrinsicContentSize()
+            setNeedsDisplay()
+        }
+    }
+    
+    /** Tells whether the pin code is empty. */
+    public var isEmpty: Bool {
+        return text.isEmpty
+    }
+    
+    /** Tells whether all characters were entered. */
+    public var isFilled: Bool {
+        return text.characters.count == length
+    }
     
     
     // MARK: UITextInputTraits protocol properties
-    var autocapitalizationType = UITextAutocapitalizationType.None
-    var autocorrectionType = UITextAutocorrectionType.No
-    var spellCheckingType = UITextSpellCheckingType.No
-    var keyboardType = UIKeyboardType.NumberPad
-    var keyboardAppearance = UIKeyboardAppearance.Default
-    var returnKeyType = UIReturnKeyType.Done
-    var enablesReturnKeyAutomatically = true
+    public var autocapitalizationType = UITextAutocapitalizationType.None
+    public var autocorrectionType = UITextAutocorrectionType.No
+    public var spellCheckingType = UITextSpellCheckingType.No
+    public var keyboardType = UIKeyboardType.NumberPad
+    public var keyboardAppearance = UIKeyboardAppearance.Default
+    public var returnKeyType = UIReturnKeyType.Done
+    public var enablesReturnKeyAutomatically = true
     
     
     // MARK: initialization
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         initialSetup()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialSetup()
     }
     
     private func initialSetup() {
-        addTarget(self, action: "becomeFirstResponder", forControlEvents: .TouchUpInside)
-    }
-    
-    
-    //MARK: UIView
-    override func intrinsicContentSize() -> CGSize {
-        let width = Double(maximumLength) * dotRadius * 2 + Double(maximumLength - 1) * dotSpacing + lineWidth
-        let height = dotRadius * 2 + lineWidth
-        return CGSizeMake(CGFloat(width), CGFloat(height))
-    }
-    
-    override func drawRect(rect: CGRect) {
-        var origin = CGPointZero
-        let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, dotColor?.CGColor)
-        CGContextSetStrokeColorWithColor(context, dotColor?.CGColor)
-        CGContextSetLineWidth(context, CGFloat(lineWidth))
-        for i in 0..<maximumLength {
-            let isDotFilled = Int(i) < pinCode.characters.count
-            
-            let diameter = isDotFilled ? CGFloat(dotRadius * 2) + CGFloat(lineWidth) : CGFloat(dotRadius * 2)
-            let position = isDotFilled ? origin : CGPointMake(origin.x + CGFloat(lineWidth / 2), origin.y + CGFloat(lineWidth / 2))
-            let dotRect = CGRect(origin: position, size: CGSize(width: diameter, height: diameter))
-            let drawFunction = isDotFilled ? CGContextFillEllipseInRect : CGContextStrokeEllipseInRect
-            
-            drawFunction(context, dotRect)
-            
-            origin.x += CGFloat(dotRadius * 2 + dotSpacing)
-        }
-    }
-    
-    
-    // MARK: UIKeyInput
-    func hasText() -> Bool {
-        return !pinCode.isEmpty
-    }
-    
-    func insertText(text: String) {
-        if !self.enabled {
-            return
-        }
-        
-        if pinCode.characters.count + text.characters.count > Int(maximumLength) {
-            return
-        }
-        
-        pinCode.appendContentsOf(text)
-        setNeedsDisplay()
-        sendActionsForControlEvents(.EditingChanged)
-    }
-    
-    func deleteBackward() {
-        if !self.enabled || pinCode.isEmpty {
-            return
-        }
-        
-        pinCode.removeAtIndex(pinCode.endIndex.predecessor())
-        setNeedsDisplay()
-        sendActionsForControlEvents(.EditingChanged)
+        addTarget(self, action: #selector(becomeFirstResponder), forControlEvents: .TouchUpInside)
     }
     
     
     // MARK: UIResponder
-    override func canBecomeFirstResponder() -> Bool {
+    override public func canBecomeFirstResponder() -> Bool {
         return true
     }
     
-    override var inputAccessoryView: UIView? {
+    private var accessoryView: UIView?
+    
+    override public var inputAccessoryView: UIView? {
         get {
             return accessoryView
         }
-        
         set(value) {
             accessoryView = value
         }
     }
+    
+    
+    //MARK: UIView
+    override public func intrinsicContentSize() -> CGSize {
+        let width = CGFloat(length) * (diameter + spacing) - spacing + thickness
+        let height = diameter + thickness
+        return CGSizeMake(width, height)
+    }
+    
+    override public func drawRect(rect: CGRect) {
+        var origin = CGPointZero
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextSetStrokeColorWithColor(context, color.CGColor)
+        CGContextSetLineWidth(context, thickness)
+        
+        // Draw circles
+        for i in 0..<length {
+            
+            let isDotFilled = i < text.characters.count
+            if isDotFilled {
+                let dotRect = CGRect(origin: origin, size: CGSize(width: diameter + thickness, height: diameter + thickness))
+                CGContextFillEllipseInRect(context, dotRect)
+            } else {
+                let position = CGPointMake(origin.x + thickness/2, origin.y + thickness/2)
+                let dotRect = CGRect(origin: position, size: CGSize(width: diameter, height: diameter))
+                CGContextStrokeEllipseInRect(context, dotRect)
+            }
+            
+            origin.x += diameter + spacing
+        }
+    }
+    
 }
 
-extension NPPinCodeField {
-    /**
-     Returns a Boolean value indicating whether all characters were entered.
-     */
-    func isFilled() -> Bool {
-        return pinCode.characters.count == Int(maximumLength)
+// MARK: UIKeyInput
+extension NPPinCodeField : UIKeyInput {
+    
+    public func hasText() -> Bool {
+        return !text.isEmpty
     }
+    
+    public func insertText(textToInsert: String) {
+        if self.enabled && text.characters.count + textToInsert.characters.count <= length {
+            text.appendContentsOf(textToInsert)
+            sendActionsForControlEvents(.EditingChanged)
+        }
+    }
+    
+    public func deleteBackward() {
+        if self.enabled && !text.isEmpty {
+            text.removeAtIndex(text.endIndex.predecessor())
+            sendActionsForControlEvents(.EditingChanged)
+        }
+    }
+    
 }
