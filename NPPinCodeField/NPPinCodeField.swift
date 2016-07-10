@@ -34,7 +34,7 @@ public class NPPinCodeField: UIControl, UITextInputTraits {
     }
     
     /** Diameter of the dots. */
-    @IBInspectable public var diameter: CGFloat = 10.0 {
+    @IBInspectable public var diameter: CGFloat = 20.0 {
         didSet {
             invalidateIntrinsicContentSize()
             setNeedsDisplay()
