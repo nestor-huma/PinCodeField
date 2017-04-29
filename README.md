@@ -2,13 +2,13 @@
 Customizable pin code control inherited from UIControl.
 
 # Preview
-![alt tag](https://s31.postimg.org/qnp444auj/Simulator+Screen Shot Jul 10, 2016, 10.30.36 PM.png)
+![alt tag](https://s31.postimg.org/qnp444auj/Simulator_Screen_Shot_Jul_10_2016_10.30.36_PM.png)
 
 # Customization
 You can customize its properties in Interface Builder:
-![alt tag](https://s31.postimg.org/lnrnw657v/Screen+Shot 2016-07-10 at 10.29.10 PM.png)
+![alt tag](https://s31.postimg.org/lnrnw657v/Screen_Shot_2016-07-10_at_10.29.10_PM.png)
 
-#Usage
+# Usage
 Please check out the example project to see the NPPinCodeField in action.
 ```Swift
 
@@ -43,5 +43,5 @@ Please check out the example project to see the NPPinCodeField in action.
 
 ```
 
-#License
+# License
 MIT
