@@ -1,0 +1,16 @@
+PODS:
+  - PinCodeField (0.1.0)
+
+DEPENDENCIES:
+  - PinCodeField (from `../`)
+
+EXTERNAL SOURCES:
+  PinCodeField:
+    :path: ../
+
+SPEC CHECKSUMS:
+  PinCodeField: dfe633b7f22950005818a2ddef50b46e5e3b26c2
+
+PODFILE CHECKSUM: 470f7a94518dc3ef1242723d32ed7127a545aa52
+
+COCOAPODS: 1.4.0.beta.2

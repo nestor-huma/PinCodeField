@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'PinCodeField_Example' do
+  pod 'PinCodeField', :path => '../'
+
+  target 'PinCodeField_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

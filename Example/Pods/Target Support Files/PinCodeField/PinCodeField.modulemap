@@ -1,0 +1,6 @@
+framework module PinCodeField {
+  umbrella header "PinCodeField-umbrella.h"
+
+  export *
+  module * { export * }
+}

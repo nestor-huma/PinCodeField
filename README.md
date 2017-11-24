@@ -1,47 +1,29 @@
-# NPPinCodeField
-Customizable pin code control inherited from UIControl.
+# PinCodeField
 
-# Preview
-![alt tag](https://s31.postimg.org/qnp444auj/Simulator_Screen_Shot_Jul_10_2016_10.30.36_PM.png)
+[![CI Status](http://img.shields.io/travis/nestorpopko/PinCodeField.svg?style=flat)](https://travis-ci.org/nestorpopko/PinCodeField)
+[![Version](https://img.shields.io/cocoapods/v/PinCodeField.svg?style=flat)](http://cocoapods.org/pods/PinCodeField)
+[![License](https://img.shields.io/cocoapods/l/PinCodeField.svg?style=flat)](http://cocoapods.org/pods/PinCodeField)
+[![Platform](https://img.shields.io/cocoapods/p/PinCodeField.svg?style=flat)](http://cocoapods.org/pods/PinCodeField)
 
-# Customization
-You can customize its properties in Interface Builder:
-![alt tag](https://s31.postimg.org/lnrnw657v/Screen_Shot_2016-07-10_at_10.29.10_PM.png)
+## Example
 
-# Usage
-Please check out the example project to see the NPPinCodeField in action.
-```Swift
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let pinCodeField = NPPinCodeField()
-        
-        // Number of dots
-        pinCodeField.length = 4
-        // Dot color
-        pinCodeField.color = UIColor.darkGrayColor()
-        // Dot diameter
-        pinCodeField.diameter = 20
-        // Spacing between dots
-        pinCodeField.spacing = 16
-        // Line thickness
-        pinCodeField.thickness = 2
-        // Add target for change event
-        pinCodeField.addTarget(self, action: #selector(pinCodeChanged(_:)), forControlEvents: .EditingChanged)
-        
-        view.addSubview(pinCodeField)
-    }
-    
-    func pinCodeChanged(sender: NPPinCodeField) {
-        print("Pin code changed: " + sender.text)
-        if sender.isFilled {
-            sender.resignFirstResponder()
-            print("Pin code entered.")
-        }
-    }
+## Requirements
 
+## Installation
+
+PinCodeField is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod 'PinCodeField'
 ```
 
-# License
-MIT
+## Author
+
+nestorpopko, nestorpopko@gmail.com
+
+## License
+
+PinCodeField is available under the MIT license. See the LICENSE file for more info.

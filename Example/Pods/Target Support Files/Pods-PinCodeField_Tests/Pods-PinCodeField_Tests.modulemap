@@ -1,0 +1,6 @@
+framework module Pods_PinCodeField_Tests {
+  umbrella header "Pods-PinCodeField_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
