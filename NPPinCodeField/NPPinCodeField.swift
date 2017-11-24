@@ -27,7 +27,7 @@ public class NPPinCodeField: UIControl, UITextInputTraits {
     }
     
     /** Color of the dots. */
-    @IBInspectable public var color: UIColor = UIColor.blackColor() {
+    @IBInspectable public var color: UIColor = .black {
         didSet {
             setNeedsDisplay()
         }
@@ -64,17 +64,17 @@ public class NPPinCodeField: UIControl, UITextInputTraits {
     
     /** Tells whether all characters were entered. */
     public var isFilled: Bool {
-        return text.characters.count == length
+        return text.count == length
     }
     
     
     // MARK: UITextInputTraits protocol properties
-    public var autocapitalizationType = UITextAutocapitalizationType.None
-    public var autocorrectionType = UITextAutocorrectionType.No
-    public var spellCheckingType = UITextSpellCheckingType.No
-    public var keyboardType = UIKeyboardType.NumberPad
-    public var keyboardAppearance = UIKeyboardAppearance.Default
-    public var returnKeyType = UIReturnKeyType.Done
+    public var autocapitalizationType = UITextAutocapitalizationType.none
+    public var autocorrectionType = UITextAutocorrectionType.no
+    public var spellCheckingType = UITextSpellCheckingType.no
+    public var keyboardType = UIKeyboardType.numberPad
+    public var keyboardAppearance = UIKeyboardAppearance.default
+    public var returnKeyType = UIReturnKeyType.done
     public var enablesReturnKeyAutomatically = true
     
     
@@ -90,12 +90,12 @@ public class NPPinCodeField: UIControl, UITextInputTraits {
     }
     
     private func initialSetup() {
-        addTarget(self, action: #selector(becomeFirstResponder), forControlEvents: .TouchUpInside)
+        addTarget(self, action: #selector(becomeFirstResponder), for: .touchUpInside)
     }
     
     
     // MARK: UIResponder
-    override public func canBecomeFirstResponder() -> Bool {
+    public override var canBecomeFirstResponder: Bool {
         return true
     }
     
@@ -112,30 +112,32 @@ public class NPPinCodeField: UIControl, UITextInputTraits {
     
     
     //MARK: UIView
-    override public func intrinsicContentSize() -> CGSize {
+    public override var intrinsicContentSize: CGSize {
         let width = CGFloat(length) * (diameter + spacing) - spacing + thickness
         let height = diameter + thickness
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
-    override public func drawRect(rect: CGRect) {
-        var origin = CGPointZero
-        let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextSetStrokeColorWithColor(context, color.CGColor)
-        CGContextSetLineWidth(context, thickness)
+    public override func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
+        context.setFillColor(color.cgColor)
+        context.setStrokeColor(color.cgColor)
+        context.setLineWidth(thickness)
         
         // Draw circles
+        var origin = CGPoint.zero
         for i in 0..<length {
             
-            let isDotFilled = i < text.characters.count
+            let isDotFilled = i < text.count
             if isDotFilled {
                 let dotRect = CGRect(origin: origin, size: CGSize(width: diameter + thickness, height: diameter + thickness))
-                CGContextFillEllipseInRect(context, dotRect)
+                context.fillEllipse(in: dotRect)
             } else {
-                let position = CGPointMake(origin.x + thickness/2, origin.y + thickness/2)
+                let position = CGPoint(x: origin.x + thickness/2, y: origin.y + thickness/2)
                 let dotRect = CGRect(origin: position, size: CGSize(width: diameter, height: diameter))
-                CGContextStrokeEllipseInRect(context, dotRect)
+                context.strokeEllipse(in: dotRect)
             }
             
             origin.x += diameter + spacing
@@ -147,21 +149,21 @@ public class NPPinCodeField: UIControl, UITextInputTraits {
 // MARK: UIKeyInput
 extension NPPinCodeField : UIKeyInput {
     
-    public func hasText() -> Bool {
+    public var hasText: Bool {
         return !text.isEmpty
     }
     
-    public func insertText(textToInsert: String) {
-        if self.enabled && text.characters.count + textToInsert.characters.count <= length {
-            text.appendContentsOf(textToInsert)
-            sendActionsForControlEvents(.EditingChanged)
+    public func insertText(_ textToInsert: String) {
+        if isEnabled && text.count + textToInsert.count <= length {
+            text.append(textToInsert)
+            sendActions(for: .editingChanged)
         }
     }
     
     public func deleteBackward() {
-        if self.enabled && !text.isEmpty {
-            text.removeAtIndex(text.endIndex.predecessor())
-            sendActionsForControlEvents(.EditingChanged)
+        if isEnabled && !text.isEmpty {
+            text.removeLast()
+            sendActions(for: .editingChanged)
         }
     }
     

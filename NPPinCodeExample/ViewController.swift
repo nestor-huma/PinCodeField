@@ -9,24 +9,25 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var pinCodeField: NPPinCodeField!
+    
+    @IBOutlet var pinCodeField: NPPinCodeField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "pattern")!)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         pinCodeField.becomeFirstResponder()
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         pinCodeField.resignFirstResponder()
     }
     
-    @IBAction func pinCodeChanged(sender: NPPinCodeField) {
+    @IBAction func pinCodeChanged(_ sender: NPPinCodeField) {
         print("Pin code changed: " + sender.text)
         if sender.isFilled {
             sender.resignFirstResponder()
@@ -35,4 +36,3 @@ class ViewController: UIViewController {
     }
 
 }
-
