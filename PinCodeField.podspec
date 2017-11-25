@@ -6,10 +6,10 @@ Pod::Spec.new do |s|
 PinCodeField is a simple and customizable control, designed for entering PIN-codes.
                        DESC
 
-  s.homepage         = 'https://github.com/nestorpopko/NPPinCodeField'
+  s.homepage         = 'https://github.com/nestorpopko/PinCodeField'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'nestorpopko' => 'nestorpopko@gmail.com' }
-  s.source           = { :git => 'https://github.com/nestorpopko/NPPinCodeField.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/nestorpopko/PinCodeField.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
 
