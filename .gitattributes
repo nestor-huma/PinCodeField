@@ -1,1 +1,2 @@
 /Example/Pods/Target Support Files/* linguist-vendored
+*.sh linguist-language=Swift
