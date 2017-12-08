@@ -56,7 +56,31 @@ open class PinCodeField: UIControl, UITextInputTraits {
             setNeedsDisplay()
         }
     }
-    
+
+    /** Display numbers inside circles */
+    @IBInspectable open var displayLetters = false {
+        didSet {
+            invalidateIntrinsicContentSize()
+            setNeedsDisplay()
+        }
+    }
+
+    /** Font of numbers inside circles */
+    @IBInspectable open var lettersFont: UIFont = UIFont.systemFont(ofSize: 17) {
+        didSet {
+            invalidateIntrinsicContentSize()
+            setNeedsDisplay()
+        }
+    }
+
+    /** Color of numbers inside circles */
+    @IBInspectable open var lettersColor: UIColor = .white {
+        didSet {
+            invalidateIntrinsicContentSize()
+            setNeedsDisplay()
+        }
+    }
+
     /** Tells whether the pin code is empty. */
     open var isEmpty: Bool {
         return text.isEmpty
@@ -125,7 +149,18 @@ open class PinCodeField: UIControl, UITextInputTraits {
         context.setFillColor(color.cgColor)
         context.setStrokeColor(color.cgColor)
         context.setLineWidth(thickness)
-        
+
+        let chars = text.map { String($0) }
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+
+        let attrs: [NSAttributedStringKey : Any] = [
+            NSAttributedStringKey.font: self.lettersFont,
+            NSAttributedStringKey.paragraphStyle: paragraphStyle,
+            NSAttributedStringKey.foregroundColor: self.lettersColor
+        ]
+
+
         // Draw circles
         var origin = CGPoint.zero
         for i in 0..<length {
@@ -134,6 +169,15 @@ open class PinCodeField: UIControl, UITextInputTraits {
             if isDotFilled {
                 let dotRect = CGRect(origin: origin, size: CGSize(width: diameter + thickness, height: diameter + thickness))
                 context.fillEllipse(in: dotRect)
+                context.saveGState()
+                if displayLetters {
+                    let letter: NSString = String(chars[i]) as NSString
+                    let size = letter.size(withAttributes: attrs)
+                    let centeredRect = CGRect(x: dotRect.origin.x, y: dotRect.origin.y + (dotRect.height-size.height)/2.0, width: dotRect.width, height: size.height)
+
+                    letter.draw(with: centeredRect, options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
+                }
+                context.restoreGState()
             } else {
                 let position = CGPoint(x: origin.x + thickness/2, y: origin.y + thickness/2)
                 let dotRect = CGRect(origin: position, size: CGSize(width: diameter, height: diameter))
