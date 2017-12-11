@@ -58,7 +58,7 @@ open class PinCodeField: UIControl, UITextInputTraits {
     }
 
     /** Display numbers inside circles */
-    @IBInspectable open var displayLetters = false {
+    @IBInspectable open var displayLetters: Bool = false {
         didSet {
             invalidateIntrinsicContentSize()
             setNeedsDisplay()
