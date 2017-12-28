@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PinCodeField'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'Customizable pin code control for iOS apps.'
   s.description      = <<-DESC
 PinCodeField is a simple and customizable control, designed for entering PIN-codes.
